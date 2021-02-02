@@ -5,6 +5,7 @@ using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace BotUserStateTest.Unit.Tests
 {
@@ -25,8 +26,11 @@ namespace BotUserStateTest.Unit.Tests
 
             StateService stateService = services.GetService<StateService>();
 
+            UserState userState = services.GetService<UserState>();
+            AutoSaveStateMiddleware autoSaveStateMiddleware = new AutoSaveStateMiddleware(userState);
+
             var dialog = new SaveAndRetrieveUserStateDialog(stateService);
-            var testClient = new DialogTestClient(Channels.Emulator, dialog);
+            var testClient = new DialogTestClient(Channels.Emulator, dialog, middlewares: new List<IMiddleware>() { autoSaveStateMiddleware });
 
             string userInitialText = "ValueToPutInUserState";
 
