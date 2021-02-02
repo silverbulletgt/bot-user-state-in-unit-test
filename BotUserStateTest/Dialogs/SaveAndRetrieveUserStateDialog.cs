@@ -33,7 +33,7 @@ namespace BotUserStateTest.Dialogs
             string userText = stepContext.Context.Activity.Text;
 
             //https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-state?view=azure-bot-service-4.0&tabs=csharp
-            var userStateAccessors = _stateService.UserStateAccessor;
+            var userStateAccessors = _stateService.UserState.CreateProperty<BotUserState>(nameof(BotUserState));
             var userProfile = userStateAccessors.GetAsync(stepContext.Context, () => new BotUserState()).Result;
             userProfile.UserStateValue = userText;
 
@@ -43,7 +43,7 @@ namespace BotUserStateTest.Dialogs
         protected async Task<DialogTurnResult> RespondWithUserActivityState(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             //https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-state?view=azure-bot-service-4.0&tabs=csharp
-            var userStateAccessors = _stateService.UserStateAccessor;
+            var userStateAccessors = _stateService.UserState.CreateProperty<BotUserState>(nameof(BotUserState));
             var userProfile = userStateAccessors.GetAsync(stepContext.Context, () => new BotUserState()).Result;
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text(userProfile.UserStateValue));
