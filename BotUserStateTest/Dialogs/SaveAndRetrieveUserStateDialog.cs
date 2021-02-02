@@ -48,7 +48,7 @@ namespace BotUserStateTest.Dialogs
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text(userProfile.UserStateValue));
 
-            return await stepContext.EndDialogAsync(cancellationToken);
+            return await stepContext.EndDialogAsync();
         }
     }
 }
